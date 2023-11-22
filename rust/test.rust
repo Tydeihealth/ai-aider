@@ -1,0 +1,45 @@
+extern crate serde;
+extern crate serde_json;
+
+use serde::{Deserialize, Serialize};
+
+#[derive(Serialize, Deserialize, Debug)]
+struct Project {
+    ProjectName: String,
+    ProjectCreateDate: String,
+    ProjectBudget: f64,
+    ProjectTransactions: Vec<Transaction>,
+    ProjectValue: f64,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+struct Transaction {
+    Date: String,
+    Activity: String,
+    Description: String,
+    Amount: f64,
+    DebitCreditFlag: String,
+}
+
+fn main() {
+    let data = r#"
+    {
+        "ProjectName": "Project1",
+        "ProjectCreateDate": "2022-01-01",
+        "ProjectBudget": 1000.0,
+        "ProjectTransactions": [
+            {
+                "Date": "2022-01-02",
+                "Activity": "Activity1",
+                "Description": "Description1",
+                "Amount": 100.0,
+                "DebitCreditFlag": "Debit"
+            }
+        ],
+        "ProjectValue": 900.0
+    }
+    "#;
+
+    let p: Project = serde_json::from_str(data).unwrap();
+    println!("{:?}", p);
+}
